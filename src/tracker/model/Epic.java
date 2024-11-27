@@ -1,3 +1,5 @@
+package tracker.model;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {
@@ -19,13 +21,13 @@ public class Epic extends Task {
         subTasks.remove(subtask);
     }
 
-    public void clearSubTasks() {
+    public void clearSubtaskIds() {
         subTasks.clear();
     }
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "tracker.models.Epic{" +
                 "taskName='" + getTaskName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", taskId=" + getTaskId() +

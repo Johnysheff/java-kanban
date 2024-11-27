@@ -1,3 +1,9 @@
+import tracker.controllers.TaskManager;
+import tracker.model.Epic;
+import tracker.model.Status;
+import tracker.model.Subtask;
+import tracker.model.Task;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -31,10 +37,24 @@ public class Main {
         manager.addTask(subTask2);
         manager.addTask(subTask3);
 
-        // Печатаем все задачи
-        System.out.println("Все задачи:");
-        for (Task task : manager.getAllTasks()) {
+        // Печатаем все основные задачи
+        System.out.println("Все основные задачи:");
+        for (Task task : manager.getTasks()) {
             System.out.println(task);
+        }
+        System.out.println("--------------------------"); //разделитель текста в консоли
+
+        // Печатаем все эпики
+        System.out.println("Все эпики:");
+        for (Epic epic : manager.getEpics()) {
+            System.out.println(epic);
+        }
+        System.out.println("--------------------------"); //разделитель текста в консоли
+
+        // Печатаем все подзадачи
+        System.out.println("Все подзадачи:");
+        for (Subtask subtask : manager.getSubtasks()) {
+            System.out.println(subtask);
         }
         System.out.println("--------------------------"); //разделитель текста в консоли
 
@@ -56,7 +76,7 @@ public class Main {
         manager.removeTaskById(subTask1.getTaskId());
         manager.removeTaskById(epic2.getTaskId());
         System.out.println("Все задачи после удаления подзадачи и эпика:");
-        for (Task task : manager.getAllTasks()) {
+        for (Task task : manager.getTasks()) {
             System.out.println(task);
         }
         System.out.println("--------------------------");
@@ -65,6 +85,5 @@ public class Main {
         System.out.println("Подзадачи эпика 1:");
         System.out.println(manager.getEpicSubTasks(epic1.getTaskId()));
         System.out.println("--------------------------");
-
     }
 }

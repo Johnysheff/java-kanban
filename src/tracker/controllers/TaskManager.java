@@ -1,3 +1,10 @@
+package tracker.controllers;
+
+import tracker.model.Epic;
+import tracker.model.Status;
+import tracker.model.Subtask;
+import tracker.model.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,12 +15,18 @@ public class TaskManager {
     private int nextId = 1;
 
     // Получение всех задач
-    public ArrayList<Task> getAllTasks() {
-        ArrayList<Task> result = new ArrayList<>();
-        result.addAll(epics.values());
-        result.addAll(subtasks.values());
-        result.addAll(tasks.values());
-        return result;
+    public ArrayList<Task> getTasks() {
+        return new ArrayList<>(tasks.values());
+    }
+
+    // Получение всех подзадач
+    public ArrayList<Subtask> getSubtasks() {
+        return new ArrayList<>(subtasks.values());
+    }
+
+    // Получение всех эпиков
+    public ArrayList<Epic> getEpics() {
+        return new ArrayList<>(epics.values());
     }
 
     // Получение подзадач эпика по ID
@@ -21,16 +34,28 @@ public class TaskManager {
         if (epics.containsKey(epicId)) {
             return epics.get(epicId).getSubTasks();
         } else {
-            System.out.println("Неверный ID, либо подзадачи отсутствуют");
-            return new ArrayList<>(); // Лучше вернуть пустой список
+            return new ArrayList<>(); // Возврат пустого списка в случае ошибки
         }
     }
 
     // Удаление всех задач
-    public void removeAllTasks() {
-        epics.clear();
-        subtasks.clear();
+    public void deleteTasks() {
         tasks.clear();
+    }
+
+    // Удаление всех подзадач
+    public void deleteSubtasks() {
+        for (Epic epic : epics.values()) {
+            epic.clearSubtaskIds();
+            updateEpicStatus(epic);
+        }
+        subtasks.clear();
+    }
+
+    // Удаление всех эпиков и связанных подзадач
+    public void deleteEpics() {
+        epics.clear();
+        subtasks.clear(); // Удаляем все подзадачи при удалении эпиков
     }
 
     // Добавление задачи
