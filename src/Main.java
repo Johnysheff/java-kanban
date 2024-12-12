@@ -1,3 +1,4 @@
+import tracker.controllers.InMemoryTaskManager;
 import tracker.controllers.TaskManager;
 import tracker.model.Epic;
 import tracker.model.Status;
@@ -5,9 +6,8 @@ import tracker.model.Subtask;
 import tracker.model.Task;
 
 public class Main {
-
     public static void main(String[] args) {
-        TaskManager manager = new TaskManager();
+        TaskManager manager = new InMemoryTaskManager(); // Используем реализацию интерфейса
 
         // Создание задач
         Task task1 = new Task("Первая основная задача", "Описание первой основной задачи");
@@ -73,8 +73,8 @@ public class Main {
         System.out.println("--------------------------");
 
         // Удаление подзадачи и эпика, печатаем оставшиеся задачи
-        manager.removeTaskById(subTask1.getTaskId());
-        manager.removeTaskById(epic2.getTaskId());
+        manager.removeSubtaskById(subTask1.getTaskId());
+        manager.removeEpicById(epic2.getTaskId());
         System.out.println("Все задачи после удаления подзадачи и эпика:");
         for (Task task : manager.getTasks()) {
             System.out.println(task);
@@ -82,8 +82,8 @@ public class Main {
         System.out.println("--------------------------");
 
         // Проверка подзадач эпика
-        System.out.println("Подзадачи эпика 1:");
-        System.out.println(manager.getEpicSubTasks(epic1.getTaskId()));
+        System.out.println("Подзадачи для эпика 1:");
+        System.out.println(manager.getSubtasksForEpic(epic1.getTaskId()));
         System.out.println("--------------------------");
     }
 }
