@@ -3,7 +3,6 @@ package tracker.test.managerTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tracker.controllers.InMemoryTaskManager;
-import tracker.controllers.TaskManager;
 import tracker.history.HistoryManager;
 import tracker.history.InMemoryHistoryManager;
 import tracker.model.Epic;
@@ -22,7 +21,7 @@ class InMemoryHistoryManagerTest {
     void setUp() {
         historyManager = new InMemoryHistoryManager();
         taskManager = new InMemoryTaskManager();
-        }
+    }
 
     //Тестирование добавления задач в историю
     @Test
@@ -51,8 +50,10 @@ class InMemoryHistoryManagerTest {
 
         List<Task> history = historyManager.getHistory();
         assertEquals(5, history.size(), "История должна содержать 5 задач.");
-        assertEquals("Задача 1", history.get(0).getTaskName(), "Самая старая задача должна быть Задача 1.");
-        assertEquals("Задача 5", history.get(4).getTaskName(), "Самая новая задача должна быть Задача 5.");
+        assertEquals("Задача 1", history.get(0).getTaskName(),
+                "Самая старая задача должна быть Задача 1.");
+        assertEquals("Задача 5", history.get(4).getTaskName(),
+                "Самая новая задача должна быть Задача 5.");
     }
 
     // Проверка, что задача правильно удаляется из истории
@@ -91,7 +92,8 @@ class InMemoryHistoryManagerTest {
 
         List<Task> history = historyManager.getHistory();
         assertEquals(4, history.size(), "История должна содержать 4 задачи после удаления.");
-        assertEquals("Задача 2", history.get(0).getTaskName(), "Самой старой задачей должна быть Задача 2.");
+        assertEquals("Задача 2", history.get(0).getTaskName(),
+                "Самой старой задачей должна быть Задача 2.");
     }
 
     // Проверка добавления задач в историю при получении задач из менеджера

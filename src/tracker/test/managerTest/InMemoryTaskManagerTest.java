@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 import tracker.controllers.InMemoryTaskManager;
 import tracker.controllers.TaskManager;
 import tracker.model.Epic;
+import tracker.model.Status;
 import tracker.model.Subtask;
 import tracker.model.Task;
-import tracker.model.Status;
 
 import java.util.List;
 
@@ -136,7 +136,8 @@ class InMemoryTaskManagerTest {
         taskManager.removeEpicById(epicId);
 
         assertNull(taskManager.getEpicById(epicId), "Эпик должен быть удален.");
-        assertNull(taskManager.getSubtaskById(subtask.getTaskId()), "Подзадача должна быть удалена с удалением эпика.");
+        assertNull(taskManager.getSubtaskById(subtask.getTaskId()),
+                "Подзадача должна быть удалена с удалением эпика.");
     }
 
     @Test
