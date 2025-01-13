@@ -81,26 +81,16 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getTasks() {
-        for (Task task : tasks.values()) {
-            historyManager.add(task);
-        }
         return new ArrayList<>(tasks.values());
-
     }
 
     @Override
     public List<Epic> getEpics() {
-        for (Epic epic : epics.values()) {
-            historyManager.add(epic);
-        }
         return new ArrayList<>(epics.values());
     }
 
     @Override
     public List<Subtask> getSubtasks() {
-        for (Subtask subtask : subtasks.values()) {
-            historyManager.add(subtask);
-        }
         return new ArrayList<>(subtasks.values());
     }
 
@@ -147,12 +137,21 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeAllEpics() {
+        for (Epic epic : epics.values()) {
+            historyManager.remove(epic.getTaskId()); // Удаляем эпик из истории
+            for (Subtask subtask : epic.getSubTasks()) {
+                historyManager.remove(subtask.getTaskId()); // Удаляем подзадачу из истории
+            }
+        }
         epics.clear();
         subtasks.clear();
     }
 
     @Override
     public void removeAllSubtasks() {
+        for (Subtask subtask : subtasks.values()) {
+            historyManager.remove(subtask.getTaskId()); // Удаляем подзадачи из истории
+        }
         subtasks.clear();
         for (Epic epic : epics.values()) {
             epic.clearSubtaskIds();

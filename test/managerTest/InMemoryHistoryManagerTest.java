@@ -95,41 +95,4 @@ class InMemoryHistoryManagerTest {
         assertEquals("Задача 2", history.get(0).getTaskName(),
                 "Самой старой задачей должна быть Задача 2.");
     }
-
-    // Проверка добавления задач в историю при получении задач из менеджера
-    @Test
-    void testGetTasksAddsToHistory() {
-        Task task1 = new Task("Задача 1", "Описание задачи 1");
-        task1.setTaskId(2);
-        taskManager.addTask(task1);
-        List<Task> tasks = taskManager.getTasks();
-        List<Task> history = taskManager.getHistory();
-        assertTrue(history.contains(task1), "Запрос задачи должен быть добавлен в историю.");
-    }
-
-    // Проверка добавления эпиков в историю при получении эпиков из менеджера
-    @Test
-    void testGetEpicsAddsToHistory() {
-        Epic epic = new Epic("Эпик", "Описание эпика");
-        epic.setTaskId(4);
-        taskManager.addTask(epic);
-        List<Epic> epics = taskManager.getEpics();
-        List<Task> history = taskManager.getHistory();
-        assertTrue(history.contains(epic), "Эпик должен быть добавлен в историю.");
-    }
-
-    // Проверка добавления подзадач в историю при получении подзадач из менеджера
-    @Test
-    void testGetSubtasksAddsToHistory() {
-        Epic epic = new Epic("Эпик", "Описание эпика");
-        epic.setTaskId(5);
-        taskManager.addTask(epic);
-
-        Subtask subtask = new Subtask("Подзадача", "Описание подзадачи", 5);
-        subtask.setTaskId(6);
-        taskManager.addTask(subtask);
-        List<Subtask> subtasks = taskManager.getSubtasks();
-        List<Task> history = taskManager.getHistory();
-        assertTrue(history.contains(subtask), "Подзадача должна быть добавлена в историю.");
-    }
 }
