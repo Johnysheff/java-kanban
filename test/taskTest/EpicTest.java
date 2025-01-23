@@ -1,11 +1,11 @@
-package tracker.test.taskTest;
+package taskTest;
 
-import tracker.model.Epic;
-import tracker.model.Subtask;
-import tracker.model.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import tracker.model.Epic;
+import tracker.model.Subtask;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EpicTest {
     private Epic epic;
