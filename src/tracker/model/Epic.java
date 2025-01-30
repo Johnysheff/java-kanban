@@ -37,4 +37,16 @@ public class Epic extends Task {
                 ", subTasks=" + subTasks +
                 '}';
     }
+
+    // Сохраняем эпик в CSV-формате
+    @Override
+    public String toCsvString() {
+        return String.join(",",
+                String.valueOf(getTaskId()),
+                TaskType.EPIC.name(),
+                getTaskName(),
+                getStatus().name(),
+                getDescription()
+        ) + ",";
+    }
 }

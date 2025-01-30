@@ -22,4 +22,17 @@ public class Subtask extends Task {
                 ", epicId=" + epicId +
                 '}';
     }
+
+    // Сохранение подзадачи в CSV-формате
+    @Override
+    public String toCsvString() {
+        return String.join(",",
+                String.valueOf(getTaskId()),
+                TaskType.SUBTASK.name(),
+                getTaskName(),
+                getStatus().name(),
+                getDescription(),
+                String.valueOf(epicId)
+        ) + ",";
+    }
 }

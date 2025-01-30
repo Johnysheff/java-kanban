@@ -3,6 +3,8 @@ package tracker.controllers;
 import tracker.history.HistoryManager;
 import tracker.history.InMemoryHistoryManager;
 
+import java.io.File;
+
 public class Managers {
 
     public static TaskManager getDefault() {
@@ -11,5 +13,9 @@ public class Managers {
 
     public static HistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
+    }
+
+    public static TaskManager getFileBackedTaskManager(File file) {
+        return new FileBackedTaskManager(file);
     }
 }

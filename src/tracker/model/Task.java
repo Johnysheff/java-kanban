@@ -61,4 +61,15 @@ public class Task {
                 ", status=" + status +
                 '}';
     }
+
+    // Сохранение задачи в CSV-формате
+    public String toCsvString() {
+        return String.join(",",
+                String.valueOf(taskId),
+                TaskType.TASK.name(),
+                taskName,
+                status.name(),
+                description
+        ) + ",";
+    }
 }
