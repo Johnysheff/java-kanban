@@ -23,12 +23,17 @@ public class Subtask extends Task {
                 '}';
     }
 
+    @Override
+    public TaskType getType() {
+        return TaskType.SUBTASK;
+    }
+
     // Сохранение подзадачи в CSV-формате
     @Override
     public String toCsvString() {
         return String.join(",",
                 String.valueOf(getTaskId()),
-                TaskType.SUBTASK.name(),
+                getType().name(),
                 getTaskName(),
                 getStatus().name(),
                 getDescription(),

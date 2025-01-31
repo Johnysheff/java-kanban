@@ -1,5 +1,6 @@
 package tracker.controllers;
 
+import tracker.exceptions.ManagerSaveException;
 import tracker.model.*;
 
 import java.io.File;
@@ -101,13 +102,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     continue;
                 }
                 Task task = fromString(line);
-                if (task instanceof Epic) {
-                    manager.addTask(task);
-                } else if (task instanceof Subtask) {
-                    manager.addTask(task);
-                } else {
-                    manager.addTask(task);
-                }
+                manager.addTask(task);
             }
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка загрузки файла", e);
