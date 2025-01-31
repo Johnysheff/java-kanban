@@ -39,6 +39,10 @@ public class Task {
         this.status = status;
     }
 
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,5 +64,16 @@ public class Task {
                 ", taskId=" + taskId +
                 ", status=" + status +
                 '}';
+    }
+
+    // Сохранение задачи в CSV-формате
+    public String toCsvString() {
+        return String.join(",",
+                String.valueOf(taskId),
+                TaskType.TASK.name(),
+                taskName,
+                status.name(),
+                description
+        ) + ",";
     }
 }
