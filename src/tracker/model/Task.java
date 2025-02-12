@@ -1,11 +1,25 @@
 package tracker.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Task {
     private String taskName;
     private String description;
     private Status status;
     private int taskId;
+    private Duration duration;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
+
+    public Task(String taskName, String description, LocalDateTime startTime, LocalDateTime endTime) {
+        this.taskName = taskName;
+        this.description = description;
+        this.status = Status.NEW;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
     public Task(String taskName, String description) {
         this.taskName = taskName;
@@ -13,6 +27,37 @@ public class Task {
         this.status = Status.NEW;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+        calculateDuration();
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+        calculateDuration();
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    private void calculateDuration() {
+        if (startTime != null && endTime != null) {
+            this.duration = Duration.between(startTime, endTime);
+        }
+    }
 
     public String getTaskName() {
         return taskName;
@@ -63,6 +108,9 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", taskId=" + taskId +
                 ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 '}';
     }
 
@@ -73,7 +121,10 @@ public class Task {
                 TaskType.TASK.name(),
                 taskName,
                 status.name(),
-                description
+                description,
+                duration != null ? String.valueOf(duration.toMinutes()) : "",
+                startTime != null ? startTime.toString() : "",
+                endTime != null ? endTime.toString() : ""
         ) + ",";
     }
 }

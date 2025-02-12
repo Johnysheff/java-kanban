@@ -1,12 +1,20 @@
 package tracker.model;
 
+import java.time.LocalDateTime;
+
 public class Subtask extends Task {
     private final int epicId;
+
+    public Subtask(String taskName, String taskDesc, int epicId, LocalDateTime startTime, LocalDateTime endTime) {
+        super(taskName, taskDesc, startTime, endTime);
+        this.epicId = epicId;
+    }
 
     public Subtask(String taskName, String taskDesc, int epicId) {
         super(taskName, taskDesc);
         this.epicId = epicId;
     }
+
 
     public int getEpicId() {
         return epicId;
@@ -20,6 +28,9 @@ public class Subtask extends Task {
                 ", taskId=" + getTaskId() +
                 ", status=" + getStatus() +
                 ", epicId=" + epicId +
+                ", duration=" + getDuration() +
+                ", startTime=" + getStartTime() +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 
@@ -37,7 +48,10 @@ public class Subtask extends Task {
                 getTaskName(),
                 getStatus().name(),
                 getDescription(),
-                String.valueOf(epicId)
+                String.valueOf(epicId),
+                getDuration() != null ? String.valueOf(getDuration().toMinutes()) : "",
+                getStartTime() != null ? getStartTime().toString() : "",
+                getEndTime() != null ? getEndTime().toString() : ""
         ) + ",";
     }
 }
