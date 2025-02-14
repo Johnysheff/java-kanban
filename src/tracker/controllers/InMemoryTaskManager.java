@@ -32,17 +32,21 @@ public class InMemoryTaskManager implements TaskManager {
             prioritizedTasks.add(task);
         }
 
-        if (task instanceof Epic) {
-            epics.put(task.getTaskId(), (Epic) task);
-        } else if (task instanceof Subtask) {
-            subtasks.put(task.getTaskId(), (Subtask) task);
-            Epic epic = epics.get(((Subtask) task).getEpicId());
-            if (epic != null) {
-                epic.addSubTask((Subtask) task);
-                updateEpicStatus(epic);
-            }
-        } else {
-            tasks.put(task.getTaskId(), task);
+        switch (task.getType()) {
+            case EPIC:
+                epics.put(task.getTaskId(), (Epic) task);
+                break;
+            case SUBTASK:
+                subtasks.put(task.getTaskId(), (Subtask) task);
+                Epic epic = epics.get(((Subtask) task).getEpicId());
+                if (epic != null) {
+                    epic.addSubTask((Subtask) task);
+                    updateEpicStatus(epic);
+                }
+                break;
+            default:
+                tasks.put(task.getTaskId(), task);
+                break;
         }
     }
 
@@ -53,16 +57,20 @@ public class InMemoryTaskManager implements TaskManager {
             prioritizedTasks.add(task);
         }
 
-        if (task instanceof Epic) {
-            epics.put(task.getTaskId(), (Epic) task);
-        } else if (task instanceof Subtask) {
-            subtasks.put(task.getTaskId(), (Subtask) task);
-            Epic epic = epics.get(((Subtask) task).getEpicId());
-            if (epic != null) {
-                updateEpicStatus(epic);
-            }
-        } else {
-            tasks.put(task.getTaskId(), task);
+        switch (task.getType()) {
+            case EPIC:
+                epics.put(task.getTaskId(), (Epic) task);
+                break;
+            case SUBTASK:
+                subtasks.put(task.getTaskId(), (Subtask) task);
+                Epic epic = epics.get(((Subtask) task).getEpicId());
+                if (epic != null) {
+                    updateEpicStatus(epic);
+                }
+                break;
+            default:
+                tasks.put(task.getTaskId(), task);
+                break;
         }
     }
 

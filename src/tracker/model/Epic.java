@@ -44,11 +44,24 @@ public class Epic extends Task {
                 .filter(end -> end != null)
                 .max(LocalDateTime::compareTo).orElse(null);
 
-        Duration totalDuration = Duration.between(earliestStartTime, latestEndTime);
+        Duration totalDuration = subTasks.stream()
+                .map(Subtask::getDuration)
+                .filter(duration -> duration != null)
+                .reduce(Duration.ZERO, Duration::plus);
 
-        setStartTime(earliestStartTime);
-        setEndTime(latestEndTime);
+        this.startTime = earliestStartTime;
+        this.endTime = latestEndTime;
         setDuration(totalDuration);
+    }
+
+    @Override
+    public void setStartTime(LocalDateTime endTime) {
+        throw new UnsupportedOperationException("Время начала эпика рассчитывается на основе подзадач.");
+    }
+
+    @Override
+    public void setEndTime(LocalDateTime endTime) {
+        throw new UnsupportedOperationException("Время окончания эпика рассчитывается на основе подзадач.");
     }
 
     @Override
