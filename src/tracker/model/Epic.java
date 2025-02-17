@@ -1,5 +1,7 @@
 package tracker.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
@@ -16,6 +18,9 @@ public class Epic extends Task {
     public void addSubTask(Subtask subtask) {
         if (subtask != null && !subtask.equals(this)) {
             subTasks.add(subtask);
+            if (subtask.getStartTime() != null && subtask.getEndTime() != null) {
+                updateEpicDetails();
+            }
         }
     }
 
@@ -27,6 +32,38 @@ public class Epic extends Task {
         subTasks.clear();
     }
 
+    // Обновляем время начала, окончания и продолжительность эпика
+    private void updateEpicDetails() {
+        LocalDateTime earliestStartTime = subTasks.stream()
+                .map(Subtask::getStartTime)
+                .filter(start -> start != null)
+                .min(LocalDateTime::compareTo).orElse(null);
+
+        LocalDateTime latestEndTime = subTasks.stream()
+                .map(Subtask::getEndTime)
+                .filter(end -> end != null)
+                .max(LocalDateTime::compareTo).orElse(null);
+
+        Duration totalDuration = subTasks.stream()
+                .map(Subtask::getDuration)
+                .filter(duration -> duration != null)
+                .reduce(Duration.ZERO, Duration::plus);
+
+        this.startTime = earliestStartTime;
+        this.endTime = latestEndTime;
+        setDuration(totalDuration);
+    }
+
+    @Override
+    public void setStartTime(LocalDateTime endTime) {
+        throw new UnsupportedOperationException("Время начала эпика рассчитывается на основе подзадач.");
+    }
+
+    @Override
+    public void setEndTime(LocalDateTime endTime) {
+        throw new UnsupportedOperationException("Время окончания эпика рассчитывается на основе подзадач.");
+    }
+
     @Override
     public String toString() {
         return "tracker.models.Epic{" +
@@ -35,6 +72,9 @@ public class Epic extends Task {
                 ", taskId=" + getTaskId() +
                 ", status=" + getStatus() +
                 ", subTasks=" + subTasks +
+                ", duration=" + getDuration() +
+                ", startTime=" + getStartTime() +
+                ", endTime=" + getEndTime() +
                 '}';
     }
 
@@ -51,7 +91,10 @@ public class Epic extends Task {
                 getType().name(),
                 getTaskName(),
                 getStatus().name(),
-                getDescription()
+                getDescription(),
+                getDuration() != null ? String.valueOf(getDuration().toMinutes()) : "",
+                getStartTime() != null ? getStartTime().toString() : "",
+                getEndTime() != null ? getEndTime().toString() : ""
         ) + ",";
     }
 }
