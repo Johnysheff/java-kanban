@@ -22,7 +22,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public void addTask(Task task) {
+    public Task addTask(Task task) {
         if (task.getStartTime() != null && hasIntersections(task)) {
             throw new IllegalArgumentException("Задача пересекается по времени с другой задачей.");
         }
@@ -48,6 +48,7 @@ public class InMemoryTaskManager implements TaskManager {
                 tasks.put(task.getTaskId(), task);
                 break;
         }
+        return task;
     }
 
     @Override

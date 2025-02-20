@@ -7,7 +7,7 @@ import tracker.model.Task;
 import java.util.List;
 
 public interface TaskManager {
-    void addTask(Task task);
+    Task addTask(Task task);
 
     void updateTask(Task task);
 
@@ -38,4 +38,6 @@ public interface TaskManager {
     List<Subtask> getSubtasksForEpic(int epicId);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks(); // Новый метод
 }
