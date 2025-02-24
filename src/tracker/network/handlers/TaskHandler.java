@@ -11,12 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class TaskHandler extends BaseHttpHandler {
-    private final TaskManager taskManager;
-    private final Gson gson;
 
     public TaskHandler(TaskManager taskManager, Gson gson) {
-        this.taskManager = taskManager;
-        this.gson = gson;
+        super(taskManager, gson);
     }
 
     @Override
@@ -31,6 +28,9 @@ public class TaskHandler extends BaseHttpHandler {
                     break;
                 case "POST":
                     handlePostRequest(exchange);
+                    break;
+                case "PUT":
+                    handlePutRequest(exchange);
                     break;
                 case "DELETE":
                     handleDeleteRequest(exchange, path);
@@ -48,6 +48,20 @@ public class TaskHandler extends BaseHttpHandler {
             List<Task> tasks = taskManager.getTasks();
             String response = gson.toJson(tasks);
             sendText(exchange, response, 200);
+        } else if (path.startsWith("/tasks/")) {
+            String[] parts = path.split("/");
+            if (parts.length == 3) {
+                int taskId = Integer.parseInt(parts[2]);
+                Task task = taskManager.getTaskById(taskId);
+                if (task != null) {
+                    String response = gson.toJson(task);
+                    sendText(exchange, response, 200);
+                } else {
+                    sendNotFound(exchange);
+                }
+            } else {
+                sendNotFound(exchange);
+            }
         } else {
             sendNotFound(exchange);
         }
@@ -61,6 +75,24 @@ public class TaskHandler extends BaseHttpHandler {
         try {
             Task newTask = taskManager.addTask(task);
             sendText(exchange, gson.toJson(newTask), 201);
+        } catch (IllegalArgumentException e) {
+            sendHasInteractions(exchange);
+        }
+    }
+
+    private void handlePutRequest(HttpExchange exchange) throws IOException {
+        InputStream inputStream = exchange.getRequestBody();
+        String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        Task updatedTask = gson.fromJson(body, Task.class);
+
+        try {
+            Task existingTask = taskManager.getTaskById(updatedTask.getTaskId());
+            if (existingTask != null) {
+                taskManager.updateTask(updatedTask);
+                sendText(exchange, gson.toJson(updatedTask), 200);
+            } else {
+                sendNotFound(exchange);
+            }
         } catch (IllegalArgumentException e) {
             sendHasInteractions(exchange);
         }
